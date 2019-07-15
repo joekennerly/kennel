@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import AnimalList from "./animal/AnimalList";
 import LocationList from "./location/LocationList";
 import EmployeeList from "./employee/EmployeeList";
+import OwnerList from "./owner/OwnerList";
 
 export default class ApplicationViews extends Component {
   employeesFromAPI = [
@@ -26,10 +27,33 @@ export default class ApplicationViews extends Component {
     { id: 6, name: "Checkers" }
   ];
 
+  ownersFromAPI = [
+    { id: 1, name: "Ryan Tanay", phoneNumber: "555-555-5555" },
+    { id: 2, name: "Emma Beaton", phoneNumber: "555-555-5555" },
+    { id: 3, name: "Dani Adkins", phoneNumber: "555-555-5555" },
+    { id: 4, name: "Adam Oswalt", phoneNumber: "555-555-5555" },
+    { id: 5, name: "Fletcher Bangs", phoneNumber: "555-555-5555" },
+    { id: 6, name: "Angela Lee", phoneNumber: "555-555-5555" }
+  ]
+
+  animalOwners = [
+    { id: 1, animal_Id: 1, owner_Id: 1},
+    { id: 2, animal_Id: 1, owner_Id: 2},
+    { id: 3, animal_Id: 2, owner_Id: 3},
+    { id: 4, animal_Id: 3, owner_Id: 1},
+    { id: 5, animal_Id: 3, owner_Id: 2},
+    { id: 6, animal_Id: 4, owner_Id: 4},
+    { id: 7, animal_Id: 5, owner_Id: 4},
+    { id: 8, animal_Id: 5, owner_Id: 5},
+    { id: 9, animal_Id: 6, owner_Id: 6}
+  ]
+
   state = {
+    owners: this.ownersFromAPI,
     employees: this.employeesFromAPI,
     locations: this.locationsFromAPI,
-    animals: this.animalsFromAPI
+    animals: this.animalsFromAPI,
+    animalOwners: this.animalOwners
   };
 
   render() {
@@ -52,6 +76,12 @@ export default class ApplicationViews extends Component {
           path="/employees"
           render={props => {
             return <EmployeeList employees={this.state.employees} />;
+          }}
+        />
+        <Route
+          path="/owners"
+          render={props => {
+            return <OwnerList owners={this.state.owners} />;
           }}
         />
       </React.Fragment>
