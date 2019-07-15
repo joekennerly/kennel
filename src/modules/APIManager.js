@@ -13,5 +13,15 @@ export default Object.create(null, {
     value: function(resource) {
       return fetch(`${remoteURL}/${resource}`).then(e => e.json());
     }
+  },
+  removeAndList: {
+    value: function(resource, id) {
+    return fetch(`${remoteURL}/${resource}/${id}`, {
+    method: "DELETE"
+  })
+    .then(e => e.json())
+    .then(() => fetch(`${remoteURL}/${resource}`))
+    .then(e => e.json())
+    }
   }
 });
