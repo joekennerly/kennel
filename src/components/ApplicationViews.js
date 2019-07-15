@@ -4,6 +4,8 @@ import AnimalList from "./animal/AnimalList";
 import LocationList from "./location/LocationList";
 import EmployeeList from "./employee/EmployeeList";
 import OwnerList from "./owner/OwnerList";
+import APIManager from "../modules/APIManager"
+import AnimalManager from "../modules/AnimalManager"
 
 export default class ApplicationViews extends Component {
   state = {
@@ -15,33 +17,25 @@ export default class ApplicationViews extends Component {
   };
 
   componentDidMount() {
-    const newState = {}
+    const newState = {};
 
-    fetch("http://localhost:5002/animals")
-      .then(r => r.json())
-      .then(animals => newState.animals = animals)
-      .then(() => fetch("http://localhost:5002/employees")
-      .then(r => r.json()))
-      .then(employees => newState.employees = employees)
-      .then(() => fetch("http://localhost:5002/locations")
-      .then(r => r.json()))
-      .then(locations => newState.locations = locations)
-      .then(() => fetch("http://localhost:5002/owners")
-      .then(r => r.json()))
-      .then(owners => newState.owners = owners)
-      .then(() => this.setState(newState))
+    APIManager.all("animals")
+      .then(animals => (newState.animals = animals))
+      .then(() => APIManager.all("employees"))
+      .then(employees => (newState.employees = employees))
+      .then(() => APIManager.all("locations"))
+      .then(locations => (newState.locations = locations))
+      .then(() => APIManager.all("owners"))
+      .then(owners => (newState.owners = owners))
+      .then(() => this.setState(newState));
   }
 
-  deleteAnimal = id => {
-    return fetch(`http://localhost:5002/animals/${id}`, {
-      method: "DELETE"
-    })
-    .then(e => e.json())
-    .then(() => fetch(`http://localhost:5002/animals`))
-    .then(e => e.json())
+  deleteAnimal = (id) => {
+    return AnimalManager.removeAndList(id)
     .then(animals => this.setState({
-      animals: animals
-    }))
+        animals: animals
+      })
+    )
   }
 
   render() {
@@ -55,9 +49,15 @@ export default class ApplicationViews extends Component {
           }}
         />
         <Route
+          exact
           path="/animals"
           render={props => {
-            return <AnimalList deleteAnimal={this.deleteAnimal} animals={this.state.animals} />;
+            return (
+              <AnimalList
+                deleteAnimal={this.deleteAnimal}
+                animals={this.state.animals}
+              />
+            );
           }}
         />
         <Route
