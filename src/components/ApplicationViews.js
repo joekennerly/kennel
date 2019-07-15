@@ -45,6 +45,14 @@ export default class ApplicationViews extends Component {
     )
   }
 
+  deleteOwner = (id) => {
+    return APIManager.removeAndList("owners", id)
+    .then(owners => this.setState({
+        owners
+      })
+    )
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -81,7 +89,9 @@ export default class ApplicationViews extends Component {
         <Route
           path="/owners"
           render={props => {
-            return <OwnerList owners={this.state.owners} />;
+            return <OwnerList
+              deleteOwner={this.deleteOwner}
+              owners={this.state.owners} />;
           }}
         />
       </React.Fragment>
