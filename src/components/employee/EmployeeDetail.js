@@ -1,26 +1,25 @@
 import React, { Component } from "react";
-import dog from "./DogIcon.svg";
-import "./Animal.css";
+import "./Employee.css";
+// import dog from "./DogIcon.svg";
 
-export default class Animal extends Component {
+export default class Employee extends Component {
   state = {
     saveDisabled: false
   };
 
   render() {
     return (
-      <section className="animal">
-        <div key={this.props.animal.id} className="card">
+      <section className="employee">
+        <div key={this.props.employee.id} className="card">
           <div className="card-body">
             <h4 className="card-title">
-              <img src={dog} className="icon--dog" alt="" />
-              {this.props.animal.name}
+              {this.props.employee.name}
             </h4>
-            <h6 className="card-title">{this.props.animal.breed}</h6>
+            <h6 className="card-title">{this.props.employee.breed}</h6>
             <button
               onClick={() => {
                 this.setState({ saveDisabled: true }, () =>
-                  this.props.deleteAnimal(this.props.animal.id)
+                  this.props.deleteEmployee(this.props.employee.id)
                 );
               }}
               disabled={this.state.saveDisabled}

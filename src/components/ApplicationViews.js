@@ -1,12 +1,17 @@
-import { Route } from "react-router-dom";
 import React, { Component } from "react";
-import AnimalList from "./animal/AnimalList";
-import AnimalDetail from "./animal/AnimalDetail";
+import { Route } from "react-router-dom";
+import { withRouter } from "react-router";
 import LocationList from "./location/LocationList";
+import LocationDetail from "./location/LocationDetail";
+import AnimalList from "./animal/AnimalList";
+import AnimalForm from "./animal/AnimalForm";
+import AnimalDetail from "./animal/AnimalDetail";
 import EmployeeList from "./employee/EmployeeList";
+import EmployeeForm from "./employee/EmployeeForm";
+import EmployeeDetail from "./employee/EmployeeDetail";
 import OwnerList from "./owner/OwnerList";
+import OwnerForm from "./owner/OwnerForm";
 import APIManager from "../modules/APIManager";
-import { withRouter } from 'react-router'
 
 class ApplicationViews extends Component {
   state = {
@@ -32,21 +37,56 @@ class ApplicationViews extends Component {
   }
 
   deleteAnimal = id => {
-    // console.log(this.props)
     return APIManager.delete("animals", id)
-    .then(()=> APIManager.all("animals"))
+      .then(() => APIManager.all("animals"))
       .then(animals => {
-      console.log(animals)
-        this.props.history.push("/animals")
-        this.setState({ animals: animals })
-    })
-}
+        this.props.history.push("/animals");
+        this.setState({ animals: animals });
+      });
+  };
+
+  addAnimal = animal =>
+    APIManager.post("animals", animal)
+      .then(() => APIManager.all("animals"))
+      .then(animals =>
+        this.setState({
+          animals: animals
+        })
+      );
+
+  addEmployee = employee =>
+    APIManager.post("employees", employee)
+      .then(() => APIManager.all("employees"))
+      .then(employees =>
+        this.setState({
+          employees: employees
+        })
+      );
+
+  addOwner = owner =>
+    APIManager.post("owners", owner)
+      .then(() => APIManager.all("owners"))
+      .then(owners =>
+        this.setState({
+          owners: owners
+        })
+      );
+
   deleteEmployee = id => {
-    return APIManager.removeAndList("employees", id).then(employees =>
-      this.setState({
-        employees
-      })
-    );
+    return APIManager.delete("employees", id)
+      .then(() => APIManager.all("employees"))
+      .then(employees => {
+        this.props.history.push("/employees");
+        this.setState({ employees: employees });
+      });
+  };
+  deleteLocation = id => {
+    return APIManager.delete("locations", id)
+      .then(() => APIManager.all("locations"))
+      .then(locations => {
+        this.props.history.push("/");
+        this.setState({ locations: locations });
+      });
   };
 
   deleteOwner = id => {
@@ -60,55 +100,156 @@ class ApplicationViews extends Component {
   render() {
     return (
       <React.Fragment>
-        <Route exact path="/" render={(props) => {
-    return <LocationList locations={this.state.locations} />
-}} />
-
-{/* Make sure you add the `exact` attribute here */}
-<Route exact path="/animals" render={(props) => {
-    return <AnimalList deleteAnimal={ this.deleteAnimal } animals={this.state.animals} />
-}} />
-
-{/*
-    This is a new route to handle a URL with the following pattern:
-        http://localhost:3000/animals/1
-
-    It will not handle the following URL because the `(\d+)`
-    matches only numbers after the final slash in the URL
-        http://localhost:3000/animals/jack
-*/}
-<Route path="/animals/:animalId(\d+)" render={(props) => {
-    // Find the animal with the id of the route parameter
-    let animal = this.state.animals.find(animal =>
-        animal.id === parseInt(props.match.params.animalId)
-    )
-
-    // If the animal wasn't found, create a default one
-    if (!animal) {
-        animal = {id:404, name:"404", breed: "Dog not found"}
-    }
-
-    return <AnimalDetail animal={ animal }
-                deleteAnimal={ this.deleteAnimal } />
-}} />
         <Route
+          exact
+          path="/"
+          render={props => {
+            return (
+              <LocationList
+                deleteLocation={this.deleteLocation}
+                locations={this.state.locations}
+              />
+            );
+          }}
+        />
+
+        <Route
+          path="/:locationId(\d+)"
+          render={props => {
+            let location = this.state.locations.find(
+              location =>
+                location.id === parseInt(props.match.params.locationId)
+            );
+
+            if (!location) {
+              location = { id: 404, name: "404", breed: "Location not found" };
+            }
+
+            return (
+              <LocationDetail
+                location={location}
+                deleteLocation={this.deleteLocation}
+              />
+            );
+          }}
+        />
+
+        {/* Make sure you add the `exact` attribute here */}
+        <Route
+          exact
+          path="/animals"
+          render={props => {
+            return (
+              <AnimalList
+                {...props}
+                deleteAnimal={this.deleteAnimal}
+                animals={this.state.animals}
+              />
+            );
+          }}
+        />
+
+        <Route
+          path="/animals/new"
+          render={props => {
+            return (
+              <AnimalForm
+                {...props}
+                addAnimal={this.addAnimal}
+                employees={this.state.employees}
+              />
+            );
+          }}
+        />
+
+        <Route
+          path="/animals/:animalId(\d+)"
+          render={props => {
+            // Find the animal with the id of the route parameter
+            let animal = this.state.animals.find(
+              animal => animal.id === parseInt(props.match.params.animalId)
+            );
+
+            // If the animal wasn't found, create a default one
+            if (!animal) {
+              animal = { id: 404, name: "404", breed: "Dog not found" };
+            }
+
+            return (
+              <AnimalDetail animal={animal} deleteAnimal={this.deleteAnimal} />
+            );
+          }}
+        />
+        <Route
+          exact
           path="/employees"
           render={props => {
             return (
               <EmployeeList
+                {...props}
                 deleteEmployee={this.deleteEmployee}
                 employees={this.state.employees}
               />
             );
           }}
         />
+
         <Route
+          path="/employees/new"
+          render={props => {
+            return (
+              <EmployeeForm
+                {...props}
+                addEmployee={this.addEmployee}
+                employees={this.state.employees}
+              />
+            );
+          }}
+        />
+
+        <Route
+          path="/employees/:employeeId(\d+)"
+          render={props => {
+            let employee = this.state.employees.find(
+              employee =>
+                employee.id === parseInt(props.match.params.employeeId)
+            );
+
+            if (!employee) {
+              employee = { id: 404, name: "404", breed: "Employee not found" };
+            }
+
+            return (
+              <EmployeeDetail
+                employee={employee}
+                deleteEmployee={this.deleteEmployee}
+              />
+            );
+          }}
+        />
+
+        <Route
+          exact
           path="/owners"
           render={props => {
             return (
               <OwnerList
+                {...props}
                 deleteOwner={this.deleteOwner}
                 owners={this.state.owners}
+              />
+            );
+          }}
+        />
+
+        <Route
+          path="/owners/new"
+          render={props => {
+            return (
+              <OwnerForm
+                {...props}
+                addOwner={this.addOwner}
+                employees={this.state.employees}
               />
             );
           }}
@@ -118,4 +259,4 @@ class ApplicationViews extends Component {
   }
 }
 
-export default withRouter(ApplicationViews)
+export default withRouter(ApplicationViews);
