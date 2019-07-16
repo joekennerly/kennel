@@ -5,7 +5,6 @@ import LocationList from "./location/LocationList";
 import EmployeeList from "./employee/EmployeeList";
 import OwnerList from "./owner/OwnerList";
 import APIManager from "../modules/APIManager"
-import AnimalManager from "../modules/AnimalManager"
 
 export default class ApplicationViews extends Component {
   state = {
@@ -31,9 +30,25 @@ export default class ApplicationViews extends Component {
   }
 
   deleteAnimal = (id) => {
-    return AnimalManager.removeAndList(id)
+    return APIManager.removeAndList("animals", id)
     .then(animals => this.setState({
-        animals: animals
+        animals
+      })
+    )
+  }
+
+  deleteEmployee = (id) => {
+    return APIManager.removeAndList("employees", id)
+    .then(employees => this.setState({
+        employees
+      })
+    )
+  }
+
+  deleteOwner = (id) => {
+    return APIManager.removeAndList("owners", id)
+    .then(owners => this.setState({
+        owners
       })
     )
   }
@@ -63,13 +78,20 @@ export default class ApplicationViews extends Component {
         <Route
           path="/employees"
           render={props => {
-            return <EmployeeList employees={this.state.employees} />;
+            return(
+              <EmployeeList
+                deleteEmployee={this.deleteEmployee}
+                employees={this.state.employees}
+            />
+          )
           }}
         />
         <Route
           path="/owners"
           render={props => {
-            return <OwnerList owners={this.state.owners} />;
+            return <OwnerList
+              deleteOwner={this.deleteOwner}
+              owners={this.state.owners} />;
           }}
         />
       </React.Fragment>

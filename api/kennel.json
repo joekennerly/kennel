@@ -35,14 +35,6 @@
       "name": "Doodles"
     },
     {
-      "id": 2,
-      "name": "Jack"
-    },
-    {
-      "id": 3,
-      "name": "Jack"
-    },
-    {
       "id": 5,
       "name": "Jack"
     },
@@ -75,11 +67,6 @@
     {
       "id": 5,
       "name": "Fletcher Bangs",
-      "phoneNumber": "555-555-5555"
-    },
-    {
-      "id": 6,
-      "name": "Angela Lee",
       "phoneNumber": "555-555-5555"
     }
   ],
