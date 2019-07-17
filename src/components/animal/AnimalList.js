@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export default class AnimalList extends Component {
   render() {
-    let owners = this.props.animalOwners
+    let owners = this.props.owners
     console.log(owners)
     return (
       <React.Fragment>
@@ -29,9 +29,12 @@ export default class AnimalList extends Component {
                   <img src={dog} className="icon--dog" alt="dog" />
                   <h5>{animal.name}</h5>
 
-                  {this.props.animalOwners.filter(animalOwner => (
+                  {this.props.animalOwners.filter(animalOwner =>
                     animalOwner.animal_Id === animal.id
-                  ))[0].animal}
+                  ).map(dogOwner => {
+                    console.log(dogOwner.owner_Id)
+                    return (<div key={dogOwner.owner_Id}>{this.props.owners.find(trueOwner => trueOwner.id === dogOwner.owner_Id).name}</div>)
+                  })}
 
                   {/* // <h6 key={animalOwner.id}>{animalOwner.animal_Id}</h6> */}
 
