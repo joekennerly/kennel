@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { withRouter } from "react-router";
+import Login from "./authentication/Login";
 import LocationList from "./location/LocationList";
 import LocationDetail from "./location/LocationDetail";
 import AnimalList from "./animal/AnimalList";
@@ -36,6 +37,8 @@ class ApplicationViews extends Component {
       .then(animalOwners => (newState.animalOwners = animalOwners))
       .then(() => this.setState(newState));
   }
+
+  isAuthenticated = () => sessionStorage.getItem("credentials") !== null || localStorage.getItem("credentials") !== null
 
   deleteAnimal = id => {
     return APIManager.delete("animals", id)
@@ -98,21 +101,26 @@ class ApplicationViews extends Component {
     );
   };
 
-
   render() {
     // console.log(this.state)
     return (
       <React.Fragment>
+        <Route path="/login" component={Login} />
+
         <Route
           exact
           path="/"
           render={props => {
-            return (
-              <LocationList
-                deleteLocation={this.deleteLocation}
-                locations={this.state.locations}
-              />
-            );
+            if (this.isAuthenticated()) {
+              return (
+                <LocationList
+                  deleteLocation={this.deleteLocation}
+                  locations={this.state.locations}
+                />
+              );
+            } else {
+              return <Redirect to="/login" />;
+            }
           }}
         />
 
@@ -142,14 +150,18 @@ class ApplicationViews extends Component {
           exact
           path="/animals"
           render={props => {
-            return (
-              <AnimalList
-                {...props}
-                deleteAnimal={this.deleteAnimal}
-                animals={this.state.animals}
-                animalOwners={this.state.animalOwners}
-              />
-            );
+            if (this.isAuthenticated()) {
+              return (
+                <AnimalList
+                  owners={this.state.owners}
+                  animalOwners={this.state.animalOwners}
+                  deleteAnimal={this.deleteAnimal}
+                  animals={this.state.animals}
+                />
+              );
+            } else {
+              return <Redirect to="/login" />;
+            }
           }}
         />
 
@@ -180,7 +192,11 @@ class ApplicationViews extends Component {
             }
 
             return (
-              <AnimalDetail animal={animal} animalOwners={this.animalOwners} deleteAnimal={this.deleteAnimal} />
+              <AnimalDetail
+                animal={animal}
+                animalOwners={this.animalOwners}
+                deleteAnimal={this.deleteAnimal}
+              />
             );
           }}
         />
@@ -188,13 +204,16 @@ class ApplicationViews extends Component {
           exact
           path="/employees"
           render={props => {
-            return (
-              <EmployeeList
-                {...props}
-                deleteEmployee={this.deleteEmployee}
-                employees={this.state.employees}
-              />
-            );
+            if (this.isAuthenticated()) {
+              return (
+                <EmployeeList
+                  deleteEmployee={this.deleteEmployee}
+                  employees={this.state.employees}
+                />
+              );
+            } else {
+              return <Redirect to="/login" />;
+            }
           }}
         />
 
