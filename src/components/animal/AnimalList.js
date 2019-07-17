@@ -3,8 +3,11 @@ import dog from "./DogIcon.svg";
 import "./Animal.css";
 import { Link } from "react-router-dom";
 
+
 export default class AnimalList extends Component {
   render() {
+    let owners = this.props.animals
+    console.log(owners)
     return (
       <React.Fragment>
         <div className="animalButton">

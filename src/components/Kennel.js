@@ -4,7 +4,6 @@ import ApplicationViews from "./ApplicationViews";
 
 import "./Kennel.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 export default class Kennel extends Component {
   render() {
     return (

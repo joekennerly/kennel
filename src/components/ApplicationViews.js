@@ -24,7 +24,6 @@ class ApplicationViews extends Component {
 
   componentDidMount() {
     const newState = {};
-
     APIManager.all("animals")
       .then(animals => (newState.animals = animals))
       .then(() => APIManager.all("employees"))
@@ -33,6 +32,8 @@ class ApplicationViews extends Component {
       .then(locations => (newState.locations = locations))
       .then(() => APIManager.all("owners"))
       .then(owners => (newState.owners = owners))
+      .then(() => APIManager.all("animalOwners"))
+      .then(animalOwners => (newState.animalOwners = animalOwners))
       .then(() => this.setState(newState));
   }
 
@@ -97,7 +98,9 @@ class ApplicationViews extends Component {
     );
   };
 
+
   render() {
+    // console.log(this.state)
     return (
       <React.Fragment>
         <Route
@@ -144,6 +147,7 @@ class ApplicationViews extends Component {
                 {...props}
                 deleteAnimal={this.deleteAnimal}
                 animals={this.state.animals}
+                animalOwners={this.state.animalOwners}
               />
             );
           }}
@@ -176,7 +180,7 @@ class ApplicationViews extends Component {
             }
 
             return (
-              <AnimalDetail animal={animal} deleteAnimal={this.deleteAnimal} />
+              <AnimalDetail animal={animal} animalOwners={this.animalOwners} deleteAnimal={this.deleteAnimal} />
             );
           }}
         />
