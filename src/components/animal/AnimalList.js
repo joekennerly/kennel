@@ -3,8 +3,11 @@ import dog from "./DogIcon.svg";
 import "./Animal.css";
 import { Link } from "react-router-dom";
 
+
 export default class AnimalList extends Component {
   render() {
+    let owners = this.props.animalOwners
+    console.log(owners)
     return (
       <React.Fragment>
         <div className="animalButton">
@@ -25,6 +28,13 @@ export default class AnimalList extends Component {
                 <div className="card-title">
                   <img src={dog} className="icon--dog" alt="dog" />
                   <h5>{animal.name}</h5>
+
+                  {this.props.animalOwners.filter(animalOwner => (
+                    animalOwner.animal_Id === animal.id
+                  ))[0].animal}
+
+                  {/* // <h6 key={animalOwner.id}>{animalOwner.animal_Id}</h6> */}
+
                   <Link className="nav-link" to={`/animals/${animal.id}`}>
                     Details
                   </Link>
