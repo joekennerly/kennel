@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import dog from "./DogIcon.svg";
-import "./Animal.css";
-import { Link } from "react-router-dom";
-
+import React, { Component } from "react"
+import dog from "./DogIcon.svg"
+import "./Animal.css"
+import { Link } from "react-router-dom"
 
 export default class AnimalList extends Component {
   render() {
@@ -15,7 +14,7 @@ export default class AnimalList extends Component {
             type="button"
             className="btn btn-success"
             onClick={() => {
-              this.props.history.push("/animals/new");
+              this.props.history.push("/animals/new")
             }}
           >
             Admit Animal
@@ -29,14 +28,19 @@ export default class AnimalList extends Component {
                   <img src={dog} className="icon--dog" alt="dog" />
                   <h5>{animal.name}</h5>
 
-                  {this.props.animalOwners.filter(animalOwner =>
-                    animalOwner.animal_Id === animal.id
-                  ).map(dogOwner => {
-                    console.log(dogOwner.owner_Id)
-                    return (<div key={dogOwner.owner_Id}>{this.props.owners.find(trueOwner => trueOwner.id === dogOwner.owner_Id).name}</div>)
-                  })}
-
-                  {/* // <h6 key={animalOwner.id}>{animalOwner.animal_Id}</h6> */}
+                  {this.props.animalOwners
+                    .filter(animalOwner => animalOwner.animal_Id === animal.id)
+                    .map(dogOwner => {
+                      return (
+                        <div key={dogOwner.owner_Id}>
+                          {
+                            this.props.owners.find(
+                              trueOwner => trueOwner.id === dogOwner.owner_Id
+                            ).name
+                          }
+                        </div>
+                      )
+                    })}
 
                   <Link className="nav-link" to={`/animals/${animal.id}`}>
                     Details
@@ -53,6 +57,6 @@ export default class AnimalList extends Component {
           ))}
         </section>
       </React.Fragment>
-    );
+    )
   }
 }

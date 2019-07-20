@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "./Animal.css";
+import React, { Component } from "react"
+import "./Animal.css"
 
 export default class AnimalForm extends Component {
   // Set initial state
@@ -7,37 +7,37 @@ export default class AnimalForm extends Component {
     animalName: "",
     breed: "",
     employeeId: ""
-  };
+  }
 
   // Update state whenever an input field is edited
   handleFieldChange = evt => {
-    const stateToChange = {};
-    stateToChange[evt.target.id] = evt.target.value;
-    this.setState(stateToChange);
-  };
+    const stateToChange = {}
+    stateToChange[evt.target.id] = evt.target.value
+    this.setState(stateToChange)
+  }
 
   /*
         Local method for validation, creating animal object, and
         invoking the function reference passed from parent component
      */
   constructNewAnimal = evt => {
-    evt.preventDefault();
+    evt.preventDefault()
     if (this.state.employee === "") {
-      window.alert("Please select a caretaker");
+      window.alert("Please select a caretaker")
     } else {
       const animal = {
         name: this.state.animalName,
         breed: this.state.breed,
         // Make sure the employeeId is saved to the database as a number since it is a foreign key.
         employeeId: parseInt(this.state.employeeId)
-      };
+      }
 
       // Create the animal and redirect user to animal list
       this.props
         .addAnimal(animal)
-        .then(() => this.props.history.push("/animals"));
+        .then(() => this.props.history.push("/animals"))
     }
-  };
+  }
 
   render() {
     return (
@@ -90,6 +90,6 @@ export default class AnimalForm extends Component {
           </button>
         </form>
       </React.Fragment>
-    );
+    )
   }
 }

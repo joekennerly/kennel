@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
+import "bootstrap/dist/css/bootstrap.min.css"
 
 export default class NavBar extends Component {
   render() {
@@ -28,7 +28,17 @@ export default class NavBar extends Component {
             </Link>
           </li>
         </ul>
+        <div className="md-form active-cyan active-cyan-2 m-2">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Search"
+            aria-label="Search"
+            onKeyPress={this.props.press}
+            autoFocus
+          />
+        </div>
       </nav>
-    );
+    )
   }
 }
