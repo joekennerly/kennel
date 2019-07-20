@@ -26,12 +26,12 @@ class Kennel extends Component {
   }
 
   handleKeyPress = event => {
-    if (event.key === "Enter") {
+    // if (event.key === "Enter") {
       console.log("enter press here!")
       let keyword = event.target.value
       console.log(keyword)
       this.getData(keyword)
-    }
+    // }
   }
 
   render() {
