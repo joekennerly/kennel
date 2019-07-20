@@ -14,9 +14,7 @@ export default class AnimalList extends Component {
           <button
             type="button"
             className="btn btn-success"
-            onClick={() => {
-              this.props.history.push("/animals/new");
-            }}
+            onClick={() => {this.props.history.push("/animals/new")}}
           >
             Admit Animal
           </button>
@@ -32,11 +30,8 @@ export default class AnimalList extends Component {
                   {this.props.animalOwners.filter(animalOwner =>
                     animalOwner.animal_Id === animal.id
                   ).map(dogOwner => {
-                    console.log(dogOwner.owner_Id)
                     return (<div key={dogOwner.owner_Id}>{this.props.owners.find(trueOwner => trueOwner.id === dogOwner.owner_Id).name}</div>)
                   })}
-
-                  {/* // <h6 key={animalOwner.id}>{animalOwner.animal_Id}</h6> */}
 
                   <Link className="nav-link" to={`/animals/${animal.id}`}>
                     Details

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { withRouter } from "react-router";
-import Login from "./authentication/Login";
 import LocationList from "./location/LocationList";
 import LocationDetail from "./location/LocationDetail";
 import AnimalList from "./animal/AnimalList";
@@ -13,6 +12,8 @@ import EmployeeDetail from "./employee/EmployeeDetail";
 import OwnerList from "./owner/OwnerList";
 import OwnerForm from "./owner/OwnerForm";
 import APIManager from "../modules/APIManager";
+import Login from "./authentication/Login";
+import SearchResults from "./SearchResults/SearchResults"
 
 class ApplicationViews extends Component {
   state = {
@@ -102,10 +103,19 @@ class ApplicationViews extends Component {
   };
 
   render() {
-    // console.log(this.state)
+    console.log(this.state)
     return (
       <React.Fragment>
         <Route path="/login" component={Login} />
+
+        <Route path="/search" render={(props) => {
+                    console.log("/search", this.props.results)
+                    if (this.isAuthenticated()) {
+                        return <SearchResults results={this.props.results} />
+                    } else {
+                        return <Redirect to="/login" />
+                    }
+                }} />
 
         <Route
           exact
@@ -151,8 +161,10 @@ class ApplicationViews extends Component {
           path="/animals"
           render={props => {
             if (this.isAuthenticated()) {
+              // {...props } allows navigating
               return (
                 <AnimalList
+                    {...props}
                   owners={this.state.owners}
                   animalOwners={this.state.animalOwners}
                   deleteAnimal={this.deleteAnimal}
@@ -207,6 +219,7 @@ class ApplicationViews extends Component {
             if (this.isAuthenticated()) {
               return (
                 <EmployeeList
+                  {...props}
                   deleteEmployee={this.deleteEmployee}
                   employees={this.state.employees}
                 />
@@ -244,6 +257,7 @@ class ApplicationViews extends Component {
 
             return (
               <EmployeeDetail
+                {...props}
                 employee={employee}
                 deleteEmployee={this.deleteEmployee}
               />
