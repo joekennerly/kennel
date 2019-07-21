@@ -1,9 +1,10 @@
 import React, { Component } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
+import "./SearchResults.css"
 
 class LocationResults extends Component {
   render() {
-    console.log("props", this.props)
+    // console.log("props", this.props)
     return (
       <div>
         {this.props.locations.map(location => (
@@ -19,7 +20,7 @@ class LocationResults extends Component {
 
 class AnimalResults extends Component {
   render() {
-    console.log("props", this.props)
+    // console.log("props", this.props)
     return (
       <div>
         {this.props.animals.map(animal => (
@@ -34,7 +35,7 @@ class AnimalResults extends Component {
 
 class EmployeeResults extends Component {
   render() {
-    console.log("props", this.props)
+    // console.log("props", this.props)
     return (
       <div>
         {this.props.employees.map(employee => (
@@ -49,7 +50,7 @@ class EmployeeResults extends Component {
 
 class OwnerResults extends Component {
   render() {
-    console.log("props", this.props)
+    // console.log("props", this.props)
     return (
       <div>
         {this.props.owners.map(owner => (
@@ -64,15 +65,15 @@ class OwnerResults extends Component {
 
 export default class SearchResults extends Component {
   render() {
-    console.log("hello", this.props)
+    // console.log("hello", this.props)
 
     return (
-      <React.Fragment>
+      <section className="search-results">
         <LocationResults locations={this.props.results.locations} />
         <AnimalResults animals={this.props.results.animals} />
         <EmployeeResults employees={this.props.results.employees} />
         <OwnerResults owners={this.props.results.owners} />
-      </React.Fragment>
+      </section>
     )
   }
 }

@@ -26,17 +26,18 @@ class Kennel extends Component {
   }
 
   handleKeyPress = event => {
-    // if (event.key === "Enter") {
-      console.log("enter press here!")
-      let keyword = event.target.value
-      console.log(keyword)
-      this.getData(keyword)
-    // }
+    console.log(event)
+    let keyword = event.target.value
+    console.log(keyword)
+    this.getData(keyword)
+    if (event.key === "Delete") {
+      console.log("delete")
+    }
   }
 
   render() {
-    console.log("lack of state", this.state)
-    if (this.state === null) {
+    // console.log("lack of state", this.state)
+    if (!this.state) {
       return (
         <React.Fragment>
           <NavBar press={this.handleKeyPress} />
